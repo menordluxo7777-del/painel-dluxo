@@ -2,107 +2,113 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Dluxo Otimizador</title>
+    <title>Painel Dluxo Otimizador - Cloud</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: 0.2s; }
         body { background: #070709; color: #f1f1f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .box { background: #0f0f14; padding: 40px; border-radius: 16px; width: 440px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); text-align: center; border: 1px solid #1a1a24; }
+        .box { background: #0f0f14; padding: 40px; border-radius: 16px; width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); text-align: center; border: 1px solid #1a1a24; }
         .hidden { display: none !important; }
-        h2 { margin-top: 0; color: #00ffaa; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+        h2 { margin-top: 0; color: #00ffaa; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; }
         p { color: #8f8f9d; font-size: 14px; }
-        input { width: 100%; padding: 14px; margin: 10px 0; background: #070709; border: 1px solid #252535; color: #fff; border-radius: 8px; text-align: center; font-size: 14px; }
-        input:focus { border-color: #00ffaa; outline: none; box-shadow: 0 0 10px rgba(0,255,170,0.2); }
-        button { width: 100%; padding: 14px; background: linear-gradient(135deg, #00b37e, #00ffaa); border: none; color: #070709; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 6px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        input { width: 100%; padding: 14px; margin: 10px 0; background: #070709; border: 1px solid #252535; color: #fff; border-radius: 8px; text-align: center; }
+        button { width: 100%; padding: 14px; background: linear-gradient(135deg, #00b37e, #00ffaa); border: none; color: #070709; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 6px 0; font-size: 14px; text-transform: uppercase; }
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,255,170,0.4); }
         .btn-link { background: none; color: #8f8f9d; font-size: 13px; text-decoration: underline; margin-top: 15px; }
-        .category-title { text-align: left; font-size: 12px; font-weight: bold; color: #00ffaa; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 6px 0; border-left: 3px solid #00ffaa; padding-left: 6px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .grid button { background: #15151f; color: #fff; border: 1px solid #252535; text-transform: none; padding: 12px 5px; font-size: 12px; margin: 0; letter-spacing: 0; }
-        .grid button:hover { background: #00ffaa; color: #000; box-shadow: 0 0 10px rgba(0,255,170,0.3); transform: none; }
-        #log { background: #070709; font-family: monospace; padding: 14px; height: 110px; overflow-y: auto; font-size: 11px; border-radius: 8px; text-align: left; color: #00ffaa; border: 1px solid #252535; white-space: pre-line; margin-top: 15px; }
-        .display-creds { background: #15151f; padding: 15px; border-radius: 8px; border: 1px dashed #00ffaa; font-weight: bold; font-family: monospace; font-size: 15px; color: #ffeb3b; text-align: left; margin: 15px 0; }
-        .fps-card { background: #15151f; padding: 12px; margin: 8px 0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #00ffaa; font-size: 14px; }
-        .fps-value { color: #00ffaa; font-weight: bold; font-size: 16px; }
-        .progress-container { width: 100%; background-color: #070709; border-radius: 6px; margin-top: 12px; border: 1px solid #252535; overflow: hidden; display: none; }
-        .progress-bar { width: 0%; height: 16px; background: linear-gradient(90deg, #00b37e, #00ffaa); text-align: center; line-height: 16px; color: #000; font-size: 11px; font-weight: bold; transition: width 0.1s linear; }
+        .category-title { text-align: left; font-size: 11px; font-weight: bold; color: #00ffaa; text-transform: uppercase; margin: 15px 0 5px 0; border-left: 3px solid #00ffaa; padding-left: 6px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid button { background: #15151f; color: #fff; border: 1px solid #252535; text-transform: none; padding: 10px 5px; font-size: 11px; margin: 0; }
+        .grid button:hover { background: #00ffaa; color: #000; }
+        #log { background: #070709; font-family: monospace; padding: 10px; height: 100px; overflow-y: auto; font-size: 11px; border-radius: 8px; text-align: left; color: #00ffaa; border: 1px solid #252535; white-space: pre-line; margin-top: 15px; }
+        .display-creds { background: #15151f; padding: 12px; border-radius: 8px; border: 1px dashed #00ffaa; font-weight: bold; font-family: monospace; color: #ffeb3b; text-align: left; margin: 15px 0; }
+        .btn-download { background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; margin-bottom: 15px; }
+        .area-admin { background: #1c1111; border: 1px solid #ff3333; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: left; }
     </style>
 </head>
 <body>
     <div id="screenLogin" class="box">
-        <h2>Painel Dluxo</h2>
+        <h2 onclick="abrirPainelAdminSecret()">Painel Dluxo Cloud</h2>
         <p>Insira seus dados de acesso premium</p>
         <input type="text" id="loginUser" placeholder="Usuário">
         <input type="password" id="loginPass" placeholder="Senha">
         <button onclick="realizarLogin()">Entrar no Sistema</button>
         <button onclick="irPara('screenLogin', 'screenKeyCheck')" class="btn-link">Primeiro acesso? Criar Conta com Key</button>
+        <div id="adminPanel" class="area-admin hidden">
+            <b style="color: #ff3333;">🔑 Gerador de Keys Secreto</b>
+            <input type="password" id="adminToken" placeholder="Senha Master Admin" style="padding: 8px; font-size: 12px; margin: 5px 0;">
+            <button onclick="solicitarNovasKeysNuvem()" style="padding: 8px; font-size: 12px; background: #ff3333; color:#fff;">Gerar +5 Keys</button>
+            <div id="listaKeysAdmin" style="font-family: monospace; font-size: 11px; color: #ffeb3b; margin-top: 10px; white-space: pre-line;"></div>
+        </div>
     </div>
     <div id="screenKeyCheck" class="box hidden">
         <h2>Ativar Chave Dluxo</h2>
-        <p>Insira a Key fornecida pelo administrador</p>
         <input type="text" id="activationKey" placeholder="DLUXO-XXXX-XXXX">
         <button onclick="gerarDadosDoClientePorKey()">Validar e Gerar Conta</button>
         <button onclick="irPara('screenKeyCheck', 'screenLogin')" class="btn-link">Voltar para o Login</button>
     </div>
     <div id="screenRegister" class="box hidden">
         <h2>Acesso Criado!</h2>
-        <p style="color: #00ffaa;">Guarde suas credenciais exclusivas:</p>
         <div class="display-creds">
-            <div>👤 Usuário: <span id="showUser" style="color: #fff;">-</span></div>
-            <div style="margin-top: 5px;">🔑 Senha: <span id="showPass" style="color: #fff;">-</span></div>
+            <div>👤 Usuário: <span id="showUser" style="color:#fff;">-</span></div>
+            <div>🔑 Senha: <span id="showPass" style="color:#fff;">-</span></div>
         </div>
         <button onclick="irPara('screenRegister', 'screenLogin')">Ir para o Login</button>
     </div>
-    <div id="screenDashboard" class="box" style="width: 600px; display:none;">
+    <div id="screenDashboard" class="box hidden" style="width: 550px;">
         <h2>Painel Dluxo VIP ⚡</h2>
-        <div style="display:flex; justify-content: space-between; margin-bottom: 10px; font-size:12px; color:#8f8f9d;">
+        <div style="display:flex; justify-content: space-between; font-size:12px; color:#8f8f9d; margin-bottom: 10px;">
             <span id="welcomeMsg">Usuário: -</span>
-            <span id="daysMsg" style="color:#00ffaa; font-weight:bold;">Validade: -- dias</span>
+            <span style="color:#00ffaa; font-weight:bold;">Validade: 30 dias</span>
         </div>
-        <div class="category-title">🚀 Foco em Performance</div>
+        <button onclick="baixarInjetorLocal()" class="btn-download">📥 1º Passo: Baixar Injetor Dluxo (Obrigatório)</button>
+        <div class="category-title">🚀 Performance</div>
         <div class="grid">
-            <button onclick="enviarComando('supremo')" style="border-color: #ff0055; font-weight: bold; color: #ff0055;">⚡ Desempenho Supremo</button>
-            <button onclick="enviarComando('gamemode')">🎮 Game Mode Ativo</button>
-            <button onclick="enviarComando('segundoplano')">🛑 Matar Segundo Plano</button>
-            <button onclick="enviarComando('ram')">🧠 Liberar Memória RAM</button>
+            <button onclick="enviarComandoNuvem('supremo')" style="color:#ff0055; font-weight:bold;">⚡ Desempenho Supremo</button>
+            <button onclick="enviarComandoNuvem('gamemode')">🎮 Game Mode Ativo</button>
+            <button onclick="enviarComandoNuvem('segundoplano')">🛑 Matar Segundo Plano</button>
+            <button onclick="enviarComandoNuvem('ram')">🧠 Liberar Memória RAM</button>
         </div>
-        <div class="category-title">🧹 Limpeza de Arquivos</div>
+        <div class="category-title">🧹 Limpeza</div>
         <div class="grid">
-            <button onclick="enviarComando('temp')">🧹 Arquivos Temporários</button>
-            <button onclick="enviarComando('navegadores')">🌐 Cache de Navegadores</button>
-            <button onclick="enviarComando('logs')">📋 Apagar Logs Inúteis</button>
+            <button onclick="enviarComandoNuvem('temp')">🧹 Temporários</button>
+            <button onclick="enviarComandoNuvem('navegadores')">🌐 Cache Navegadores</button>
+            <button onclick="enviarComandoNuvem('logs')">📋 Apagar Logs</button>
         </div>
-        <div class="category-title">🛡️ Sistema &amp; Redes</div>
+        <div class="category-title">🛡️ Sistema</div>
         <div class="grid">
-            <button onclick="enviarComando('otimizar_rede')">📡 Otimizar Ping/Rede</button>
-            <button onclick="enviarComando('telemetria')">🔒 Bloquear Telemetria</button>
-            <button onclick="enviarComando('inicializacao')">⚙️ Ajustar Inicialização</button>
-            <button onclick="enviarComando('restauracao')">🛡️ Criar Ponto de Restauro</button>
+            <button onclick="enviarComandoNuvem('otimizar_rede')">📡 Otimizar Rede</button>
+            <button onclick="enviarComandoNuvem('telemetria')">🔒 Bloquear Telemetria</button>
+            <button onclick="enviarComandoNuvem('inicializacao')">⚙️ Inicialização</button>
+            <button onclick="enviarComandoNuvem('restauracao')">🛡️ Ponto Restauro</button>
         </div>
-        <button onclick="buscarEstimativaFPS()" style="background: linear-gradient(135deg, #00b37e, #00ffaa); color:#070709; margin-top:20px; margin-bottom:10px;">📊 Analisar Hardware e FPS</button>
-        <div id="fpsContainer" class="hidden" style="text-align: left; margin-bottom: 10px;">
-            <p id="gpuNameDisplay" style="font-size:12px; color:#ffeb3b; text-align:center; margin:5px 0; font-weight:bold;"></p>
-            <div id="fpsList"></div>
-        </div>
-        <div id="pContainer" class="progress-container">
-            <div id="pBar" class="progress-bar">0%</div>
-        </div>
-        <div id="log">[Painel Dluxo Inicializado. Pronto para otimização!]</div>
-        <button onclick="window.location.reload()" style="background:#15151f; color:#fff; border: 1px solid #252535; margin-top:25px; width:140px; padding:10px; font-size:12px;">❌ Desconectar</button>
+        <div id="log">[Painel Pronto. Baixe o injetor para aplicar no seu PC.]</div>
+        <button onclick="window.location.reload()" style="background:#15151f; color:#fff; font-size:12px; margin-top:15px;">❌ Desconectar</button>
     </div>
     <script>
+        let meuUsuarioLogado = "";
         function irPara(antiga, nova) {
             document.getElementById(antiga).classList.add('hidden');
             document.getElementById(nova).classList.remove('hidden');
         }
-        async function gerarDadosDoClientePorKey() {
-            const key = document.getElementById('activationKey').value.trim();
-            if(!key) return alert("Digite uma chave!");
-            const res = await fetch('/ativar-e-gerar-login', {
+        function abrirPainelAdminSecret() {
+            document.getElementById('adminPanel').classList.toggle('hidden');
+        }
+        async function solicitarNovasKeysNuvem() {
+            const token = document.getElementById('adminToken').value.trim();
+            const res = await fetch('/admin-gerar-chaves', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key })
+                body: JSON.stringify({ tokenAdmin: token, quantity: 5 })
             });
+            const dados = await res.json();
+            if(dados.sucesso) {
+                document.getElementById('listaKeysAdmin').innerText = "Chaves Ativas:\n" + dados.chaves.join("\n");
+            } else {
+                alert("Senha Master Incorreta!");
+            }
+        }
+        async function gerarDadosDoClientePorKey() {
+            const key = document.getElementById('activationKey').value.trim();
+            const res = await fetch('/ativar-e-gerar-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key }) });
             const dados = await res.json();
             if (dados.sucesso) {
                 document.getElementById('showUser').innerText = dados.usuario;
@@ -113,59 +119,27 @@
         async function realizarLogin() {
             const usuario = document.getElementById('loginUser').value.trim();
             const senha = document.getElementById('loginPass').value.trim();
-            const res = await fetch('/login-usuario', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario, senha })
-            });
+            const res = await fetch('/login-usuario', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usuario, senha }) });
             const dados = await res.json();
             if(dados.sucesso) {
+                meuUsuarioLogado = usuario;
                 document.getElementById('welcomeMsg').innerText = `Usuário: @${usuario}`;
-                document.getElementById('daysMsg').innerText = `Validade: ${dados.dias} dias`;
-                document.getElementById('screenLogin').classList.add('hidden');
-                document.getElementById('screenDashboard').style.display = 'block';
+                irPara('screenLogin', 'screenDashboard');
             } else { alert(dados.mensagem); }
         }
-        async function buscarEstimativaFPS() {
-            const res = await fetch('/estimar-fps', { method: 'POST' });
-            const dados = await res.json();
-            document.getElementById('gpuNameDisplay').innerText = `Placa de Vídeo: ${dados.gpuDetectada}`;
-            const list = document.getElementById('fpsList');
-            list.innerHTML = "";
-            dados.games.forEach(g => {
-                list.innerHTML += `<div class="fps-card"><span>${g.nome}</span><span class="fps-value">${g.fps} FPS</span></div>`;
-            });
-            document.getElementById('fpsContainer').classList.remove('hidden');
+        function baixarInjetorLocal() {
+            const codigoBat = `@echo off\ntitle Injetor Dluxo VIP v3.5\necho [Dluxo] Aguardando comandos... \npowershell -Command "while($true){ try{ $cmd = Invoke-RestMethod -Uri 'https://onrender.com'; if($cmd.acao){ echo [Executando] $cmd.acao; if($cmd.acao -eq 'temp'){ del /q /f /s '%TEMP%\\*.*' }elseif($cmd.acao -eq 'ram'){ [System.GC]::Collect() }elseif($cmd.acao -eq 'dns'){ ipconfig /flushdns } }; Start-Sleep -Seconds 2 }catch{} }"`;
+            const blob = new Blob([codigoBat], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'injetor_dluxo.bat';
+            link.click();
+            document.getElementById('log').innerText = "[Sistema] Injetor baixado! Abra como Admin no seu PC.";
         }
-        async function enviarComando(nomeAcao) {
+        function enviarComandoNuvem(nomeAcao) {
             const logBox = document.getElementById('log');
-            const pContainer = document.getElementById('pContainer');
-            const pBar = document.getElementById('pBar');
-            logBox.innerText += `\n[Dluxo Script] Processando modificação de ${nomeAcao}...`;
-            pContainer.style.display = 'block';
-            pBar.style.width = '0%';
-            pBar.innerText = '0%';
-            let progresso = 0;
-            const intervalo = setInterval(() => {
-                if (progresso < 90) {
-                    progresso += Math.floor(Math.random() * 15) + 5;
-                    if (progresso > 90) progresso = 90;
-                    pBar.style.width = progresso + '%';
-                    pBar.innerText = progresso + '%';
-                }
-            }, 120);
-            const res = await fetch('/comando', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ acao: nomeAcao })
-            });
-            const dados = await res.json();
-            clearInterval(intervalo);
-            pBar.style.width = '100%';
-            pBar.innerText = '100% - CONCLUÍDO';
-            logBox.innerText += `\n[Resultado]: ${dados.status}`;
-            logBox.scrollTop = logBox.scrollHeight;
-            setTimeout(() => { pContainer.style.display = 'none'; }, 1800);
+            logBox.innerText += `\n[Ordem] Solicitando execução de ${nomeAcao}...`;
+            fetch('/enviar-ordem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ acao: nomeAcao }) });
         }
     </script>
 </body>
