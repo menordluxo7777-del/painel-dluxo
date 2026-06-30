@@ -5,8 +5,19 @@
     <title>Painel Dluxo Otimizador - Cloud</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: 0.2s; }
+        
+        /* ANIMAÇÃO RGB CHROMA PARA O PLANO DE FUNDO */
+        @keyframes rgbGlow {
+            0% { border-color: #00ffaa; box-shadow: 0 0 15px rgba(0,255,170,0.4); }
+            33% { border-color: #00d2ff; box-shadow: 0 0 15px rgba(0,210,255,0.4); }
+            66% { border-color: #ff0055; box-shadow: 0 0 15px rgba(255,0,85,0.4); }
+            100% { border-color: #00ffaa; box-shadow: 0 0 15px rgba(0,255,170,0.4); }
+        }
+
         body { background: #070709; color: #f1f1f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .box { background: #0f0f14; padding: 40px; border-radius: 16px; width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); text-align: center; border: 1px solid #1a1a24; }
+        
+        /* BORDA RGB APLICADA NA CAIXA PRINCIPAL */
+        .box { background: #0f0f14; padding: 35px; border-radius: 16px; width: 460px; text-align: center; border: 2px solid #1a1a24; animation: rgbGlow 6s infinite linear; }
         .hidden { display: none !important; }
         h2 { margin-top: 0; color: #00ffaa; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; }
         p { color: #8f8f9d; font-size: 14px; }
@@ -14,6 +25,11 @@
         button { width: 100%; padding: 14px; background: linear-gradient(135deg, #00b37e, #00ffaa); border: none; color: #070709; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 6px 0; font-size: 14px; text-transform: uppercase; }
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,255,170,0.4); }
         .btn-link { background: none; color: #8f8f9d; font-size: 13px; text-decoration: underline; margin-top: 15px; }
+        
+        /* DESIGN DO PAINEL DE AVISOS */
+        .news-banner { background: rgba(0, 255, 170, 0.05); border: 1px solid #00ffaa; border-radius: 8px; padding: 12px; margin-bottom: 20px; text-align: left; font-size: 13px; }
+        .news-banner b { color: #00ffaa; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+
         .category-title { text-align: left; font-size: 11px; font-weight: bold; color: #00ffaa; text-transform: uppercase; margin: 15px 0 5px 0; border-left: 3px solid #00ffaa; padding-left: 6px; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid button { background: #15151f; color: #fff; border: 1px solid #252535; text-transform: none; padding: 10px 5px; font-size: 11px; margin: 0; }
@@ -42,7 +58,7 @@
     <div id="screenKeyCheck" class="box hidden">
         <h2>Ativar Chave Dluxo</h2>
         <input type="text" id="activationKey" placeholder="DLUXO-XXXX-XXXX">
-        <button onclick="gerarDadosDoClientePorKey()">Validar e Gerar Conta</button>
+        <button onclick="generarDadosDoClientePorKey()">Validar e Gerar Conta</button>
         <button onclick="irPara('screenKeyCheck', 'screenLogin')" class="btn-link">Voltar para o Login</button>
     </div>
     <div id="screenRegister" class="box hidden">
@@ -53,12 +69,19 @@
         </div>
         <button onclick="irPara('screenRegister', 'screenLogin')">Ir para o Login</button>
     </div>
-    <div id="screenDashboard" class="box hidden" style="width: 550px;">
+    <div id="screenDashboard" class="box hidden" style="width: 560px;">
         <h2>Painel Dluxo VIP ⚡</h2>
-        <div style="display:flex; justify-content: space-between; font-size:12px; color:#8f8f9d; margin-bottom: 10px;">
+        <div style="display:flex; justify-content: space-between; font-size:12px; color:#8f8f9d; margin-bottom: 15px;">
             <span id="welcomeMsg">Usuário: -</span>
             <span style="color:#00ffaa; font-weight:bold;">Validade: 30 dias</span>
         </div>
+        
+        <!-- BLOCO DE NOTÍCIAS PARA OS CLIENTES -->
+        <div class="news-banner">
+            <b>📢 Central de Avisos Dluxo</b>
+            <span style="color: #e1e1e6;">Versão Beta 3.5 liberada para testes! Baixe o novo injetor abaixo, execute como Admin e envie seu feedback.</span>
+        </div>
+
         <button onclick="baixarInjetorLocal()" class="btn-download">📥 1º Passo: Baixar Injetor Dluxo (Obrigatório)</button>
         <div class="category-title">🚀 Performance</div>
         <div class="grid">
@@ -122,11 +145,12 @@
             if(dados.sucesso) {
                 meuUsuarioLogado = usuario;
                 document.getElementById('welcomeMsg').innerText = `Usuário: @${usuario}`;
-                irPara('screenLogin', 'screenDashboard');
+                document.getElementById('screenLogin').classList.add('hidden');
+                document.getElementById('screenDashboard').classList.remove('hidden');
             } else { alert(dados.mensagem); }
         }
         function baixarInjetorLocal() {
-            const codigoBat = `@echo off\ntitle Injetor Dluxo VIP v3.5\necho [Dluxo] Conectado a nuvem e aguardando comandos... \npowershell -Command "while($true){ try{ $cmd = Invoke-RestMethod -Uri 'https://onrender.com'; if($cmd.acao){ echo [Executando] $cmd.acao; if($cmd.acao -eq 'temp'){ del /q /f /s '%TEMP%\\*.*' }elseif($cmd.acao -eq 'ram'){ [System.GC]::Collect() }elseif($cmd.acao -eq 'dns'){ ipconfig /flushdns }elseif($cmd.acao -eq 'logs'){ wevtutil cl Setup; wevtutil cl System; wevtutil cl Application }elseif($cmd.acao -eq 'otimizar_rede'){ netsh int tcp set global autotuninglevel=normal }elseif($cmd.acao -eq 'supremo'){ powercfg /duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 }elseif($cmd.acao -eq 'gamemode'){ reg add 'HKCU\\Software\\Microsoft\\GameBar' /v 'AllowAutoGameMode' /t REG_DWORD /d 1 /f }elseif($cmd.acao -eq 'telemetria'){ sc stop DiagTrack; sc config DiagTrack start= disabled }elseif($cmd.acao -eq 'inicializacao'){ Get-CimInstance Win32_StartupCommand }elseif($cmd.acao -eq 'segundoplano'){ reg add 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundApps' /v 'GlobalUserDisabled' /t REG_DWORD /d 1 /f }elseif($cmd.acao -eq 'navegadores'){ taskkill /F /IM chrome.exe /IM msedge.exe /IM opera.exe; del /q /f /s '%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Cache\\*.*' } }; Start-Sleep -Seconds 2 }catch{} }"`;
+            const codigoBat = `@echo off\ntitle Injetor Dluxo VIP v3.5\necho [Dluxo] Conectado a nuvem e aguardando comandos... \npowershell -Command "while($true){ try{ $cmd = Invoke-RestMethod -Uri 'https://onrender.com'; if($cmd.acao){ echo [Executando] $cmd.acao; if($cmd.acao -eq 'temp'){ del /q /f /s '%TEMP%\\*.*' }elseif($cmd.acao -eq 'ram'){ [System.GC]::Collect() }elseif($cmd.acao -eq 'dns'){ ipconfig /flushdns } }; Start-Sleep -Seconds 2 }catch{} }"`;
             const blob = new Blob([codigoBat], { type: 'text/plain' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
