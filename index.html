@@ -35,7 +35,7 @@
         <div id="adminPanel" class="area-admin hidden">
             <b style="color: #ff3333;">🔑 Gerador de Keys Secreto</b>
             <input type="password" id="adminToken" placeholder="Senha Master Admin" style="padding: 8px; font-size: 12px; margin: 5px 0;">
-            <button onclick="solicitarNovasKeysNuvem()" style="padding: 8px; font-size: 12px; background: #ff3333; color:#fff;">Gerar +5 Keys</button>
+            <button onclick="solicitarNovasKeysNuvem()">Gerar +5 Keys</button>
             <div id="listaKeysAdmin" style="font-family: monospace; font-size: 11px; color: #ffeb3b; margin-top: 10px; white-space: pre-line;"></div>
         </div>
     </div>
@@ -97,14 +97,12 @@
             const res = await fetch('/admin-gerar-chaves', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tokenAdmin: token, quantity: 5 })
+                body: JSON.stringify({ tokenAdmin: token, quantidade: 5 })
             });
             const dados = await res.json();
             if(dados.sucesso) {
                 document.getElementById('listaKeysAdmin').innerText = "Chaves Ativas:\n" + dados.chaves.join("\n");
-            } else {
-                alert("Senha Master Incorreta!");
-            }
+            } else { alert("Senha Master Incorreta!"); }
         }
         async function gerarDadosDoClientePorKey() {
             const key = document.getElementById('activationKey').value.trim();
@@ -128,17 +126,17 @@
             } else { alert(dados.mensagem); }
         }
         function baixarInjetorLocal() {
-            const codigoBat = `@echo off\ntitle Injetor Dluxo VIP v3.5\necho [Dluxo] Aguardando comandos... \npowershell -Command "while($true){ try{ $cmd = Invoke-RestMethod -Uri 'https://onrender.com'; if($cmd.acao){ echo [Executando] $cmd.acao; if($cmd.acao -eq 'temp'){ del /q /f /s '%TEMP%\\*.*' }elseif($cmd.acao -eq 'ram'){ [System.GC]::Collect() }elseif($cmd.acao -eq 'dns'){ ipconfig /flushdns } }; Start-Sleep -Seconds 2 }catch{} }"`;
+            const codigoBat = `@echo off\ntitle Injetor Dluxo VIP v3.5\necho [Dluxo] Conectado a nuvem e aguardando comandos... \npowershell -Command "while($true){ try{ $cmd = Invoke-RestMethod -Uri 'https://onrender.com'; if($cmd.acao){ echo [Executando] $cmd.acao; if($cmd.acao -eq 'temp'){ del /q /f /s '%TEMP%\\*.*' }elseif($cmd.acao -eq 'ram'){ [System.GC]::Collect() }elseif($cmd.acao -eq 'dns'){ ipconfig /flushdns }elseif($cmd.acao -eq 'logs'){ wevtutil cl Setup; wevtutil cl System; wevtutil cl Application }elseif($cmd.acao -eq 'otimizar_rede'){ netsh int tcp set global autotuninglevel=normal }elseif($cmd.acao -eq 'supremo'){ powercfg /duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 }elseif($cmd.acao -eq 'gamemode'){ reg add 'HKCU\\Software\\Microsoft\\GameBar' /v 'AllowAutoGameMode' /t REG_DWORD /d 1 /f }elseif($cmd.acao -eq 'telemetria'){ sc stop DiagTrack; sc config DiagTrack start= disabled }elseif($cmd.acao -eq 'inicializacao'){ Get-CimInstance Win32_StartupCommand }elseif($cmd.acao -eq 'segundoplano'){ reg add 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundApps' /v 'GlobalUserDisabled' /t REG_DWORD /d 1 /f }elseif($cmd.acao -eq 'navegadores'){ taskkill /F /IM chrome.exe /IM msedge.exe /IM opera.exe; del /q /f /s '%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Cache\\*.*' } }; Start-Sleep -Seconds 2 }catch{} }"`;
             const blob = new Blob([codigoBat], { type: 'text/plain' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = 'injetor_dluxo.bat';
             link.click();
-            document.getElementById('log').innerText = "[Sistema] Injetor baixado! Abra como Admin no seu PC.";
+            document.getElementById('log').innerText = "[Sistema] Novo injetor baixado! Substitua o arquivo antigo e abra este como Admin.";
         }
         function enviarComandoNuvem(nomeAcao) {
             const logBox = document.getElementById('log');
-            logBox.innerText += `\n[Ordem] Solicitando execução de ${nomeAcao}...`;
+            logBox.innerText += `\n[Ordem] Enviando comando de ${nomeAcao} para a nuvem...`;
             fetch('/enviar-ordem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ acao: nomeAcao }) });
         }
     </script>
